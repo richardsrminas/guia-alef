@@ -232,12 +232,12 @@
        ========================================= */
     .hero {
       position: relative;
-      height: 92vh;
-      min-height: 560px;
+      height: 100vh;
+      min-height: 600px;
       display: flex;
       align-items: center;
       overflow: hidden;
-      background: #122319;
+      background: var(--green-dark);
     }
     .hero-bg {
       position: absolute;
@@ -266,42 +266,46 @@
       animation: fadeUp 0.8s 0.2s both;
     }
     .hero h1 {
-      font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+      font-size: clamp(3rem, 6vw, 5rem);
       font-weight: 600;
       line-height: 1.05;
       color: #fff;
-      margin-bottom: 18px;
-      letter-spacing: -1px;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
       animation: fadeUp 0.8s 0.4s both;
     }
     .hero h1 em { font-style: italic; color: var(--accent); }
     .hero-sub {
-      font-size: 14px;
-      color: rgba(255,255,255,0.75);
+      font-size: 15px;
+      color: rgba(255,255,255,0.8);
       line-height: 1.9;
-      max-width: 420px;
-      margin-bottom: 34px;
+      max-width: 480px;
+      margin-bottom: 36px;
       font-weight: 400;
       animation: fadeUp 0.8s 0.6s both;
     }
     .hero-cta {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: var(--green-dark);
-      padding: 15px 34px;
-      font-size: 12px;
+      gap: 12px;
+      background: var(--accent);
+      color: #1E2A22;
+      padding: 16px 40px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.35s;
+      transition: all var(--transition-base);
+      border-radius: var(--radius-sm);
       animation: fadeUp 0.8s 0.8s both;
     }
-    .hero-cta:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+    .hero-cta:hover,
+    .hero-cta:focus-visible {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px var(--accent-glow);
+    }
     .hero-scroll {
       position: absolute;
       right: 32px;
