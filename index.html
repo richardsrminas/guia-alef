@@ -714,7 +714,6 @@
           <a href="#faq">Perguntas frequentes</a>
         </div>
         <div class="nav-actions">
-          <a href="#passeios" class="btn-ghost">Roteiros</a>
           <a href="https://wa.me/5531992893251" class="btn-primary" target="_blank" rel="noopener">WhatsApp</a>
         </div>
         <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">
@@ -920,19 +919,19 @@
         </div>
         <div class="faq-list">
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Preciso agendar com antecedência? <span>&#9654;</span></button>
+            <button class="faq-question" onclick="toggleFaq(this)">Preciso agendar com antecedência?</button>
             <div class="faq-answer">Sim. Recomendamos entrar em contato com pelo menos alguns dias de antecedência para garantir a data e a disponibilidade do guia.</div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Os roteiros são indicados para crianças? <span>&#9654;</span></button>
+            <button class="faq-question" onclick="toggleFaq(this)">Os roteiros são indicados para crianças?</button>
             <div class="faq-answer">Sim. O Alef ajusta o ritmo e o percurso conforme o perfil do grupo, incluindo famílias com crianças.</div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">O que está incluído no passeio? <span>&#9654;</span></button>
+            <button class="faq-question" onclick="toggleFaq(this)">O que está incluído no passeio?</button>
             <div class="faq-answer">Acompanhamento do guia credenciado, roteiro definido com você e dicas das melhores trilhas, cachoeiras e mirantes da região.</div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Preciso de carro próprio? <span>&#9654;</span></button>
+            <button class="faq-question" onclick="toggleFaq(this)">Preciso de carro próprio?</button>
             <div class="faq-answer">O transporte até os atrativos é combinado com o Alef no momento do agendamento, de acordo com o roteiro escolhido.</div>
           </div>
         </div>
@@ -989,8 +988,7 @@
     function toggleFaq(btn) {
       const item = btn.parentElement;
       const open = item.classList.toggle('open');
-      const arrow = btn.querySelector('span');
-      arrow.textContent = open ? '&#9660;' : '&#9654;';
+      btn.setAttribute('aria-expanded', open);
     }
 
     /* WhatsApp roteiros */
