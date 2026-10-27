@@ -427,7 +427,7 @@
       background: var(--bg);
       color: var(--ink);
       font-family: 'Inter', sans-serif;
-      font-size: 13px;
+      font-size: 14px;
     }
     .btn-block {
       width: 100%;
@@ -889,7 +889,7 @@
         </div>
         <div class="tours-grid">
           <article class="tour-card reveal stagger" style="--i:0">
-            <div class="tour-thumb"><img src="./assets/foto1.jpg" alt="Caminho do Céu"></div>
+            <div class="tour-thumb"><img src="./assets/caminhodoceu.jpg" alt="Caminho do Céu"></div>
             <span class="tour-tag">Caminho do Céu</span>
             <div class="tour-body">
               <h4 class="tour-title">Caminho do Céu</h4>
@@ -901,7 +901,7 @@
             </div>
           </article>
           <article class="tour-card reveal stagger" style="--i:1">
-            <div class="tour-thumb"><img src="./assets/foto2.jpg" alt="Cachoeira do Fundão"></div>
+            <div class="tour-thumb"><img src="./assets/fundao.jpg" alt="Fundão"></div>
             <span class="tour-tag">Fundão</span>
             <div class="tour-body">
               <h4 class="tour-title">Fundão</h4>
@@ -913,7 +913,7 @@
             </div>
           </article>
           <article class="tour-card reveal stagger" style="--i:2">
-            <div class="tour-thumb"><img src="./assets/foto3.jpg" alt="Casca Danta Parte Alta"></div>
+            <div class="tour-thumb"><img src="./assets/cascadantapartealta.jpg" alt="Casca Danta Parte Alta"></div>
             <span class="tour-tag">Casca Danta</span>
             <div class="tour-body">
               <h4 class="tour-title">Casca Danta Parte Alta</h4>
@@ -925,7 +925,7 @@
             </div>
           </article>
           <article class="tour-card reveal stagger" style="--i:3">
-            <div class="tour-thumb"><img src="./assets/foto4.jpg" alt="Vale da Babilônia"></div>
+            <div class="tour-thumb"><img src="./assets/valedababilonia.jpg" alt="Vale da Babilônia"></div>
             <span class="tour-tag">Babilônia</span>
             <div class="tour-body">
               <h4 class="tour-title">Babilônia (Vale da Babilônia)</h4>
@@ -1123,9 +1123,14 @@
     /* WhatsApp roteiros */
     function sendWhatsApp(tourName, dateInputId) {
       const input = document.getElementById(dateInputId);
-      const date = input ? input.value : '';
+      const dateVal = input ? input.value : '';
       let message = `Olá Alef! Tenho interesse no roteiro ${tourName}`;
-      if (date) { message += ` para a data ${date}`; }
+      if (dateVal) {
+        // Converte de yyyy-mm-dd (HTML input) para dd/mm/yyyy (brasileiro)
+        const [y, m, d] = dateVal.split('-');
+        const dateBr = `${d}/${m}/${y}`;
+        message += ` para a data ${dateBr}`;
+      }
       message += '. Gostaria de saber mais informações.';
       const url = 'https://wa.me/5531992893251?text=' + encodeURIComponent(message);
       window.open(url, '_blank');
