@@ -115,7 +115,7 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 26px;
+      gap: 20px;
       font-size: 15px;
       letter-spacing: 0.5px;
       text-transform: uppercase;
@@ -124,9 +124,18 @@
       flex: 1;
       justify-content: center;
     }
-    .nav-links a { color: var(--ink-soft); }
-    .nav-links a:hover { color: var(--green-dark); }
-    .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .nav-links a {
+      color: var(--ink-soft);
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--green-dark);
+      background: var(--green-light);
+      border-color: var(--green-dark);
+    }    .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
     .btn-ghost {
       font-size: 14px;
       font-weight: 600;
@@ -608,28 +617,8 @@
     }
     .footer-credits { margin-bottom: 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft); }
 
-    .footer-wa {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #fff;
-      padding: 14px 30px;
-      border-radius: 10px;
-      background: #22c55e;
-      box-shadow: 0 12px 30px rgba(34,197,94,0.35);
-      transition: all 0.3s;
-    }
-    .footer-wa:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 16px 40px rgba(34,197,94,0.45); }
-
-    /* =========================================
-       WhatsApp flutuante
-       ========================================= */
+    .logo span { color: var(--accent); font-style: italic; }
+    .nav-links {
     .wa-float {
       position: fixed;
       bottom: 32px;
@@ -951,7 +940,6 @@
   <footer>
     <div class="footer-credits">Alef &#8226; Guia credenciado Serra da Canastra &#8226; Vargem Bonita, MG</div>
     <p style="font-size: 11px;">Ecoturismo responsável &#8226; Trilhas &#8226; Cachoeiras &#8226; Mirantes</p>
-    <a href="https://wa.me/5531992893251?text=Ol%C3%A1%20Alef!%20Tenho%20interesse%20em%20fazer%20um%20roteiro%20pela%20Serra%20da%20Canastra.%20Gostaria%20de%20saber%20mais%20informa%C3%A7%C3%B5es." class="btn-whatsapp footer-wa" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
   </footer>
   <nav class="nav-mobile" id="navMobile">
     <button class="nav-mobile-close" id="navClose" aria-label="Fechar menu">&#215;</button>
