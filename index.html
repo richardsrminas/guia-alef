@@ -8,10 +8,10 @@
   <meta name="description" content="Descubra a Serra da Canastra com o Guia Alef. Roteiros de ecoturismo, trilhas e cachoeiras saindo de Vargem Bonita, MG.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* =========================================
-       Design tokens
+       Design tokens — inspirado em capao-forro e jurere
        ========================================= */
     :root {
       --bg: #F7F4EE;
@@ -23,20 +23,16 @@
       --green-light: #dce8dd;
       --accent: #c9a255;
       --line: #e4d9c8;
-      --radius: 24px;
-      --shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
-      --max-width: 1080px;
-      --shell-width: 900px;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --radius: 16px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      --shell-width: 980px;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     *,
     *::before,
-    *::after { box-sizing: border-box; }
-    html {
-      scroll-behavior: smooth;
-      -webkit-tap-highlight-color: transparent;
-    }
+    *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
     body {
       margin: 0;
       padding: 0;
@@ -44,36 +40,30 @@
       color: var(--ink);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: 1rem;
-      line-height: 1.6;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
     h1, h2, h3, h4 {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
       margin: 0;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
+      font-weight: 600;
     }
     p { margin: 0; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; height: auto; }
-    ul { margin: 0; padding: 0; list-style: none; }
     :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 
-    /* Reveal on scroll */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-    }
-    .reveal.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+    /* Grain texture (subtile, como o capao-forro) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
     /* =========================================
@@ -83,292 +73,327 @@
     .shell {
       max-width: var(--shell-width);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
     }
 
     /* =========================================
-       Header
+       Nav fixo com blur
        ========================================= */
-    header {
-      position: relative;
-      padding: 48px 0 0;
-    }
+    header { position: sticky; top: 0; z-index: 100; }
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
+      padding: 20px 0;
       gap: 16px;
+      background: rgba(247, 244, 238, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
     }
     .logo {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.6rem;
-      font-weight: 700;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 600;
       color: var(--green-dark);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
-    .logo span { color: var(--green); }
-    .nav-links { display: none; gap: 28px; font-size: 0.9rem; font-weight: 500; color: var(--ink-soft); }
+    .logo span { color: var(--accent); font-style: italic; }
+    .nav-links { display: none; gap: 30px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
     .nav-links a { color: var(--ink-soft); }
     .nav-links a:hover { color: var(--green-dark); }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
     .btn-ghost {
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       color: var(--ink);
-      padding: 8px 14px;
+      padding: 10px 20px;
       border: 1px solid var(--line);
-      border-radius: 999px;
+      border-radius: 8px;
       background: transparent;
       cursor: pointer;
+      transition: all 0.3s;
     }
-    .btn-ghost:hover { background: var(--green-light); }
+    .btn-ghost:hover { background: var(--green-light); border-color: var(--green-dark); }
     .btn-primary {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #ffffff;
-      padding: 10px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 11px 26px;
       border: none;
-      border-radius: 999px;
+      border-radius: 8px;
       background: var(--green-dark);
       cursor: pointer;
+      transition: all 0.35s;
     }
-    .btn-primary:hover { filter: brightness(1.12); }
+    .btn-primary:hover { background: #162a22; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(31,58,46,0.35); }
+
+    .menu-toggle {
+      display: flex;
+      width: 30px;
+      height: 20px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 101;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: all 0.35s var(--ease);
+    }
 
     /* =========================================
-       Hero
+       Hero — imagem de fundo com texto sobreposta (sem espaço vago)
        ========================================= */
     .hero {
       position: relative;
-      padding: 0 0 56px;
+      height: 92vh;
+      min-height: 560px;
+      display: flex;
+      align-items: center;
       overflow: hidden;
+      background: #122319;
     }
-    .hero .figure {
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('./assets/capa.jpg') center/cover no-repeat;
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(31,58,46,0.85) 40%, rgba(31,58,46,0.35) 100%),
+                  linear-gradient(to top, rgba(31,58,46,0.95) 0%, transparent 60%);
+    }
+    .hero-content {
       position: relative;
-      width: 100%;
-      height: 320px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin-bottom: 24px;
-      background: var(--green-light);
+      z-index: 2;
+      padding: 0 28px;
+      max-width: 700px;
     }
-    .hero .figure img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1);
-      transition: transform 0.6s ease;
-    }
-    .hero .figure:hover img { transform: scale(1.03); }
-    .hero-eyebrow {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      color: var(--green-dark);
-      margin-bottom: 10px;
-      display: inline-block;
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 18px;
+      animation: fadeUp 0.8s 0.2s both;
     }
     .hero h1 {
-      font-size: 2.4rem;
-      line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 14px;
-    }
-    .hero h1 strong { color: var(--green-dark); }
-    .hero-sub {
-      font-size: 1rem;
-      color: var(--ink-soft);
-      line-height: 1.7;
-      max-width: 38ch;
-      margin-bottom: 22px;
-    }
-    .hero .btn-cta {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
+      font-size: clamp(2.6rem, 5.5vw, 4.6rem);
       font-weight: 600;
-      color: var(--green-dark);
-      padding: 12px 22px;
-      border: 2px solid var(--green-dark);
-      border-radius: 999px;
-      background: var(--surface);
-      cursor: pointer;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      animation: fadeUp 0.8s 0.4s both;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.9;
+      max-width: 420px;
+      margin-bottom: 34px;
+      font-weight: 400;
+      animation: fadeUp 0.8s 0.6s both;
+    }
+    .hero-cta {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-    }
-    .hero .btn-cta:hover { background: var(--green-dark); color: #ffffff; }
-
-    /* =========================================
-       Section headings
-       ========================================= */
-    .section-head {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-    .section-head .eyebrow {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.16em;
+      gap: 10px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
       color: var(--green-dark);
-      margin-bottom: 8px;
-      display: inline-block;
+      padding: 15px 34px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.35s;
+      animation: fadeUp 0.8s 0.8s both;
     }
-    .section-head h2 {
-      font-size: 1.7rem;
-      line-height: 1.3;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-    .section-head h2 span { color: var(--green-dark); }
-    .section-head p {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      max-width: 46ch;
-      margin: 0 auto;
-    }
-
-    /* =========================================
-       Sobre o guia
-       ========================================= */
-    .about {
-      padding: 32px 20px;
-      margin-bottom: 40px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
+    .hero-cta:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+    .hero-scroll {
+      position: absolute;
+      right: 32px;
+      bottom: 40px;
+      z-index: 3;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      align-items: flex-start;
-      max-width: var(--shell-width);
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.35);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: fadeIn 1s 1.2s both;
     }
-    @media (min-width: 700px) {
-      .about { flex-direction: row; align-items: center; padding: 40px 32px; }
+    .hero-scroll-line { width: 1px; height: 56px; background: rgba(255,255,255,0.15); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* =========================================
+       Seções / títulos
+       ========================================= */
+    section { padding: 100px 0; position: relative; }
+    .sec-head { text-align: center; margin-bottom: 60px; }
+    .sec-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+      display: inline-block;
     }
-    .about-image {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
+    .sec-head h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .sec-head h2 span { color: var(--green-dark); font-style: italic; }
+    .sec-head p {
+      font-size: 14px;
+      color: var(--ink-soft);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* =========================================
+       Sobre o guia — foto pequena + texto ao lado
+       ========================================= */
+    .about {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 56px 0;
+      overflow: hidden;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; gap: 28px; } }
+    .about-img-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      border-radius: 14px;
       overflow: hidden;
       border: 3px solid var(--green-dark);
       background: var(--green-light);
       flex-shrink: 0;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
     }
-    .about-image img { width: 100%; height: 100%; object-fit: cover; }
-    .about-text { flex: 1; }
-    .about .eyebrow {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--green-dark);
-      margin: 0;
-      display: inline-block;
-    }
-    .about h3 {
-      font-size: 1.5rem;
-      color: var(--ink);
-      margin: 6px 0 10px;
-    }
-    .about p {
-      color: var(--ink-soft);
-      line-height: 1.75;
-      margin: 0 0 10px;
-      font-size: 0.95rem;
-    }
-    .about p strong { color: var(--ink); }
-    .about p:last-child { margin-bottom: 0; }
+    .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+    .about-img-wrap:hover img { transform: scale(1.06); }
+    @media (max-width: 700px) { .about-img-wrap { width: 170px; height: 170px; margin: 0 auto; } }
+    .about-text h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); color: var(--ink); margin-bottom: 14px; }
+    .about-text p { color: var(--ink-soft); line-height: 2; margin-bottom: 14px; font-size: 14px; }
+    .about-text p strong { color: var(--ink); }
 
     /* =========================================
-       Passeios / destaque
+       Passeios — cards com hover 3D e imagem grande
        ========================================= */
-    .grid {
+    .tours-grid {
       display: grid;
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
     }
-    .grid-two { grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .grid-two { grid-template-columns: repeat(2, 1fr); } }
-    .grid-three { grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .grid-three { grid-template-columns: repeat(3, 1fr); } }
-
-    .card {
+    .tour-card {
       position: relative;
-      border-radius: var(--radius);
+      border-radius: 16px;
       overflow: hidden;
       background: var(--surface);
       border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-      display: flex;
-      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+      perspective: 1000px;
     }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.08); }
-    .card .thumb {
+    .tour-card:hover {
+      transform: translateY(-10px) rotateY(4deg) rotateX(-2deg);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+    }
+    .tour-thumb {
       position: relative;
       width: 100%;
-      height: 200px;
+      height: 300px;
       background: var(--green-light);
       overflow: hidden;
     }
-    .card .thumb img { width: 100%; height: 100%; object-fit: cover; transform: scale(1); transition: transform 0.5s ease; }
-    .card:hover .thumb img { transform: scale(1.04); }
-    .card-tag {
+    .tour-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
+    .tour-card:hover .tour-thumb img { transform: scale(1.12); }
+    .tour-tag {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: #ffffff;
-      background: rgba(31, 58, 46, 0.92);
-      padding: 5px 12px;
+      top: 16px;
+      left: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(31,58,46,0.92);
+      padding: 7px 16px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.5);
       backdrop-filter: blur(6px);
     }
-    .card-body { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
-    .card-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.15rem;
+    .tour-body { padding: 26px 28px; display: flex; flex-direction: column; }
+    .tour-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.4rem;
       color: var(--ink);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    .card-desc {
-      font-size: 0.85rem;
+    .tour-desc {
+      font-size: 13px;
       color: var(--ink-soft);
-      line-height: 1.6;
-      margin-bottom: 14px;
+      line-height: 1.75;
+      margin-bottom: 22px;
       flex: 1;
     }
-    .card-footer {
-      margin-top: auto;
-      display: flex;
-      gap: 8px;
-      flex-direction: column;
-    }
+    .tour-footer { margin-top: auto; display: flex; gap: 10px; flex-direction: column; }
     input[type="date"] {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 10px;
       border: 1px solid var(--line);
       background: var(--bg);
       color: var(--ink);
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 13px;
     }
     .btn-block {
       width: 100%;
-      padding: 11px 14px;
+      padding: 13px 16px;
       border-radius: 10px;
       border: none;
       background: var(--green-dark);
-      color: #ffffff;
+      color: #fff;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 13px;
       font-weight: 600;
+      letter-spacing: 0.5px;
       cursor: pointer;
       transition: transform 0.15s ease, filter 0.2s ease;
     }
@@ -376,160 +401,110 @@
     .btn-block:active { transform: translateY(0); }
 
     /* =========================================
-       Por que nos escolher / processo
+       Diferenciais
        ========================================= */
-    .why {
-      margin-bottom: 40px;
-    }
     .why-grid {
       display: grid;
-      gap: 14px;
-      grid-template-columns: 1fr;
+      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
     }
-    @media (min-width: 700px) { .why-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px) { .why-grid { grid-template-columns: 1fr; } }
     .why-card {
-      padding: 22px 18px;
+      padding: 30px 24px;
       border-radius: 16px;
       border: 1px solid var(--line);
       background: var(--surface);
-      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
     }
-    .why-card:hover { transform: translateY(-4px); border-color: var(--green-light); }
+    .why-card:hover { transform: translateY(-5px); border-color: var(--green-light); }
     .why-number {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.5rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.4rem;
       font-weight: 700;
       color: var(--green-dark);
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: inline-block;
     }
-    .why-card h4 {
-      font-size: 1.05rem;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-    .why-card p {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
+    .why-card h4 { font-size: 1.1rem; color: var(--ink); margin-bottom: 8px; }
+    .why-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
 
+    /* =========================================
+       Processo em 3 passos
+       ========================================= */
     .process {
       background: var(--green-dark);
-      color: #ffffff;
-      border-radius: var(--radius);
-      padding: 48px 24px;
-      margin-bottom: 40px;
+      color: #fff;
+      border-radius: 24px;
+      padding: 80px 32px;
       text-align: center;
     }
-    .process .eyebrow { color: var(--accent); }
-    .process h2 { color: #ffffff; margin-bottom: 10px; font-size: 1.7rem; }
-    .process p { color: rgba(255,255,255,0.85); max-width: 46ch; margin: 0 auto 28px; font-size: 0.9rem; }
-    .steps { display: flex; gap: 16px; flex-direction: column; align-items: center; }
+    .process .sec-eyebrow { color: var(--accent); }
+    .process h2 { color: #fff; margin-bottom: 10px; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+    .process p { color: rgba(255,255,255,0.8); max-width: 520px; margin: 0 auto 48px; font-size: 14px; line-height: 1.8; }
+    .steps { display: flex; gap: 24px; flex-direction: column; align-items: center; }
     @media (min-width: 700px) { .steps { flex-direction: row; justify-content: center; } }
-    .step {
-      width: 200px;
-      text-align: center;
-    }
-    .step-kicker {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 8px;
-      display: block;
-    }
-    .step h4 {
-      font-size: 1.1rem;
-      color: #ffffff;
-      margin-bottom: 6px;
-    }
-    .step p { color: rgba(255,255,255,0.8); font-size: 0.85rem; line-height: 1.5; }
+    .step { width: 220px; text-align: center; }
+    .step-kicker { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; display: block; text-transform: uppercase; }
+    .step h4 { font-size: 1.2rem; color: #fff; margin-bottom: 8px; }
+    .step p { color: rgba(255,255,255,0.75); font-size: 13px; line-height: 1.7; }
 
     /* =========================================
        Estatísticas
        ========================================= */
-    .stats {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
+    .stats { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 40px 0 0; }
     .stat {
-      padding: 10px 16px;
+      padding: 10px 20px;
       border-radius: 999px;
       border: 1px solid var(--line);
       background: var(--surface);
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.25rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.6rem;
       color: var(--green-dark);
       font-weight: 700;
     }
     .stat span {
       font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 500;
       color: var(--ink-soft);
       display: block;
-      margin-top: 3px;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* =========================================
        Depoimentos
        ========================================= */
-    .testimonials {
-      margin-bottom: 40px;
-    }
-    .testimonial-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+    .testimonials { text-align: center; }
+    .testimonial-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, 1fr); max-width: 860px; margin: 0 auto; }
+    @media (max-width: 700px) { .testimonial-grid { grid-template-columns: 1fr; } }
     .quote {
-      padding: 22px 20px;
+      padding: 30px 26px;
       border-radius: 16px;
       border: 1px solid var(--line);
       background: var(--surface);
-      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
     }
-    .quote:hover { transform: translateY(-4px); border-color: var(--green-light); }
+    .quote:hover { transform: translateY(-5px); border-color: var(--green-light); }
     .quote-mark {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 2rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 3rem;
       color: var(--green-dark);
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: block;
     }
-    .quote p {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      line-height: 1.65;
-      margin-bottom: 12px;
-    }
-    .author {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .author small {
-      font-weight: 400;
-      color: var(--ink-soft);
-      font-size: 0.75rem;
-    }
-
-    .stars {
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin-top: 6px;
-      letter-spacing: 2px;
-    }
+    .quote p { font-size: 15px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 14px; font-style: italic; }
+    .author { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .author small { font-weight: 400; color: var(--ink-soft); font-size: 11px; }
+    .stars { color: var(--accent); font-size: 15px; margin-top: 10px; letter-spacing: 3px; }
 
     /* =========================================
        FAQ
        ========================================= */
-    .faq {
-      margin-bottom: 40px;
-    }
+    .faq-list { max-width: 640px; margin: 0 auto; }
     .faq-item {
       border-radius: 14px;
       border: 1px solid var(--line);
@@ -539,9 +514,9 @@
     .faq-question {
       width: 100%;
       text-align: left;
-      padding: 14px 20px;
+      padding: 16px 22px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
+      font-size: 14px;
       font-weight: 600;
       color: var(--ink);
       background: transparent;
@@ -556,10 +531,10 @@
     .faq-answer {
       max-height: 0;
       overflow: hidden;
-      padding: 0 20px 16px;
+      padding: 0 22px 18px;
       color: var(--ink-soft);
-      font-size: 0.85rem;
-      line-height: 1.6;
+      font-size: 13px;
+      line-height: 1.7;
       transition: max-height 0.4s var(--ease), padding 0.4s var(--ease);
     }
     .faq-item.open .faq-answer { max-height: 260px; }
@@ -570,299 +545,329 @@
        ========================================= */
     .final-cta {
       text-align: center;
-      padding: 50px 24px;
+      padding: 80px 28px;
       background: var(--surface);
-      border-radius: var(--radius);
+      border-radius: 24px;
       border: 1px solid var(--line);
-      margin-bottom: 40px;
-      transition: transform 0.3s var(--ease);
     }
-    .final-cta:hover { transform: translateY(-4px); }
-    .final-cta h2 { font-size: 1.7rem; color: var(--ink); margin-bottom: 10px; }
-    .final-cta p { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 22px; font-size: 0.9rem; }
+    .final-cta h2 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--ink); margin-bottom: 14px; }
+    .final-cta h2 span { color: var(--green-dark); font-style: italic; }
+    .final-cta p { color: var(--ink-soft); max-width: 520px; margin: 0 auto 30px; font-size: 14px; line-height: 1.8; }
     .btn-whatsapp {
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #ffffff;
-      padding: 14px 26px;
-      border-radius: 999px;
-      background: #25D366;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 16px 36px;
+      border-radius: 10px;
+      background: #22c55e;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+      gap: 10px;
+      box-shadow: 0 12px 30px rgba(34,197,94,0.35);
+      transition: all 0.3s;
     }
-    .btn-whatsapp:hover { filter: brightness(1.08); }
+    .btn-whatsapp:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 16px 40px rgba(34,197,94,0.45); }
 
     /* =========================================
        Footer
        ========================================= */
     footer {
       border-top: 1px solid var(--line);
-      padding: 40px 24px 56px;
+      padding: 56px 28px 70px;
       text-align: center;
       color: var(--ink-soft);
-      font-size: 0.8rem;
+      font-size: 13px;
     }
-    .footer-credits { margin-bottom: 10px; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--ink-soft); }
-
-    /* Reveal utilities — keep reveal classes working for the stats wrapper too */
-    .stats.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-    .stats.reveal.revealed { opacity: 1; transform: translateY(0); }
+    .footer-credits { margin-bottom: 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft); }
 
     /* =========================================
-       Menu mobile
+       WhatsApp flutuante
        ========================================= */
-    .menu-toggle {
+    .wa-float {
       position: fixed;
-      inset: 0 0 0 0;
-      background: var(--surface);
-      z-index: 100;
-      padding: 70px 24px 40px;
-      transform: translateX(100%);
-      transition: transform 0.35s ease;
-      border-right: 1px solid var(--line);
-      max-width: 280px;
-      width: 100%;
-    }
-    .nav-mobile.open { transform: translateX(0); }
-    .nav-mobile-close {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      color: var(--ink);
-      cursor: pointer;
-      line-height: 1;
-    }
-    .nav-mobile a {
-      display: block;
-      padding: 14px 0;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-mobile a:hover { color: var(--green-dark); }
-    .nav-mobile .btn-whatsapp {
-      margin-top: 24px;
-      display: inline-flex;
+      bottom: 32px;
+      right: 32px;
+      z-index: 200;
+      width: 56px;
+      height: 56px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 14px 0;
-      box-shadow: none;
+      box-shadow: 0 8px 28px rgba(34,197,94,0.35);
+      transition: all 0.3s;
+      animation: pop 0.6s 1s both;
     }
+    .wa-float::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(34,197,94,0.35);
+      animation: waPulse 2s infinite;
+    }
+    @keyframes waPulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+    @keyframes pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+    .wa-float:hover { transform: scale(1.12); box-shadow: 0 12px 36px rgba(34,197,94,0.45); }
 
+    /* =========================================
+       Reveal on scroll (referência jurere/capao-forro)
+       ========================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+    .reveal-left.visible { opacity: 1; transform: none; }
+    .stagger { transition-delay: calc(var(--i) * 0.12s); }
+
+    /* =========================================
+       Responsive
+       ========================================= */
     @media (min-width: 700px) {
-      .menu-toggle { display: none; }
       .nav-links { display: flex; }
-      .nav-mobile { display: none; }
-      .hero { padding: 0 0 72px; }
-      .hero .figure { height: 420px; }
-      .hero h1 { font-size: 3rem; }
-      .hero-sub { font-size: 1.05rem; }
-      .section-head h2 { font-size: 2rem; }
+      .menu-toggle { display: none; }
+      .hero { padding-top: 90px; }
+      .hero-content { padding: 0 60px; }
+      .hero-scroll { right: 60px; bottom: 60px; }
+      section { padding: 120px 0; }
+      .sec-head { margin-bottom: 80px; }
+      .about-grid { gap: 64px; }
     }
-
+    @media (max-width: 699px) {
+      .nav-actions { display: none; }
+      .hero-content { padding: 0 24px; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-cta { width: 100%; justify-content: center; padding: 16px 0; }
+      .hero-scroll { display: none; }
+      section { padding: 80px 0; }
+      .sec-head { margin-bottom: 56px; }
+      .stats { gap: 12px; }
+      .stat { padding: 8px 16px; font-size: 1.3rem; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="shell">
-      <!-- Header -->
-      <header>
-        <nav class="nav">
-          <div class="logo">Alef <span>Canastra</span></div>
-          <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">
-            <span></span><span></span><span></span>
-          </button>
-          <div class="nav-actions">
-            <a href="#passeios" class="btn-ghost">Roteiros</a>
-            <a href="https://wa.me/5531992893251" class="btn-primary" target="_blank" rel="noopener">WhatsApp</a>
+  <header>
+    <nav class="nav">
+      <div class="logo">Alef <span>Canastra</span></div>
+      <div class="nav-links">
+        <a href="#sobre">Quem guia</a>
+        <a href="#passeios">Roteiros</a>
+        <a href="#diferenciais">Diferenciais</a>
+        <a href="#faq">Perguntas frequentes</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#passeios" class="btn-ghost">Roteiros</a>
+        <a href="https://wa.me/5531992893251" class="btn-primary" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <a href="https://wa.me/5531992893251?text=Ol%C3%A1%20Alef!%20Tenho%20interesse%20em%20fazer%20um%20roteiro%20pela%20Serra%20da%20Canastra.%20Gostaria%20de%20saber%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Falar no WhatsApp">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.374 0 0 5.373 0 12c0 2.117.554 4.1 1.523 5.818L.057 23.862a.5.5 0 00.612.612l6.046-1.466A11.932 11.932 0 0011.998 24C18.626 24 24 18.627 24 12c0-6.628-5.374-12-12.002-12z"/></svg>
+  </a>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="hero-tag">Guia credenciado &#8226; Serra da Canastra, MG</span>
+        <h1>Descubra a Serra da Canastra com o Guia Alef</h1>
+        <p class="hero-sub">Roteiros de ecoturismo responsável, trilhas, cachoeiras e mirantes saindo de Vargem Bonita, com vivências autênticas na natureza mineira.</p>
+        <a href="https://wa.me/5531992893251" class="hero-cta" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
+      </div>
+      <div class="hero-scroll"><span>scroll</span><div class="hero-scroll-line"></div></div>
+    </section>
+
+    <!-- Sobre o guia -->
+    <section id="sobre" class="about reveal">
+      <div class="shell">
+        <div class="about-grid">
+          <div class="about-img-wrap reveal-left">
+            <img src="./fotos/alef.jpg" alt="Foto do guia Alef">
           </div>
-        </nav>
-      </header>
+          <div class="about-text reveal">
+            <span class="sec-eyebrow">Quem guia</span>
+            <h3>Conheça o Alef</h3>
+            <p><strong>Guia credenciado pelo Parque Nacional da Serra da Canastra</strong> (Cadastur nº 39259562000190 / SEI 10966906), o Alef atua há anos oferecendo experiências completas e seguras pela região.</p>
+            <p>Baseado em <strong>Vargem Bonita (MG)</strong> &#8212; porta de entrada da Canastra &#8212; ele conduz roteiros que exploram as principais cachoeiras, trilhas e mirantes, sempre com foco em ecoturismo responsável.</p>
+            <p>Participa também do projeto <strong>&#8220;Passaporte do Queijo&#8221;</strong>, conectando o visitante à cultura e à gastronomia local.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <!-- Hero -->
-      <section class="hero">
-        <div class="figure">
-          <img src="./assets/capa.jpg" alt="Cachoeira da Serra da Canastra">
-        </div>
-        <div class="hero-content" style="max-width: 36ch;">
-          <span class="hero-eyebrow">Guia credenciado &#8226; Serra da Canastra, MG</span>
-          <h1><strong>Descubra a Serra da Canastra</strong> com o Guia Alef</h1>
-          <p class="hero-sub">Roteiros de ecoturismo responsável, trilhas, cachoeiras e mirantes saindo de Vargem Bonita, com vivências autênticas na natureza mineira.</p>
-          <a href="https://wa.me/5531992893251" class="btn-cta" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
-        </div>
-      </section>
-
-      <!-- Sobre -->
-      <section class="about reveal reveal-delay-1">
-        <span class="eyebrow">Quem guia</span>
-        <div class="about-image">
-          <img src="./fotos/alef.jpg" alt="Foto do guia Alef">
-        </div>
-        <div class="about-text">
-          <h3>Conheça o Alef</h3>
-          <p><strong>Guia credenciado pelo Parque Nacional da Serra da Canastra</strong> (Cadastur nº 39259562000190 / SEI 10966906), o Alef atua há anos oferecendo experiências completas e seguras pela região.</p>
-          <p>Baseado em <strong>Vargem Bonita (MG)</strong> — porta de entrada da Canastra — ele conduz roteiros que exploram as principais cachoeiras, trilhas e mirantes, sempre com foco em ecoturismo responsável.</p>
-          <p>Participa também do projeto <strong>“Passaporte do Queijo”</strong>, conectando o visitante à cultura e à gastronomia local.</p>
-        </div>
-      </section>
-
-      <!-- Passeios -->
-      <section id="passeios" class="reveal reveal-delay-2">
-        <div class="section-head">
-          <span class="eyebrow">Roteiros em destaque</span>
+    <!-- Passeios -->
+    <section id="passeios" class="reveal">
+      <div class="shell">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Roteiros em destaque</span>
           <h2>Escolha sua <span>aventura</span></h2>
-          <p>Sem preços aqui — selecione a data e fale direto com o Alef pelo WhatsApp.</p>
+          <p>Sem preços aqui &#8212; selecione a data e fale direto com o Alef pelo WhatsApp.</p>
         </div>
-        <div class="grid grid-three">
-          <article class="card">
-            <div class="thumb"><img src="./assets/foto1.jpg" alt="Caminho do Céu"></div>
-            <span class="card-tag">Caminho do Céu</span>
-            <div class="card-body">
-              <h4 class="card-title">Caminho do Céu</h4>
-              <p class="card-desc">Trilha que leva a um dos mirantes mais deslumbrantes da região, com vista sobre os campos e as serras da Canastra.</p>
-              <div class="card-footer">
+        <div class="tours-grid">
+          <article class="tour-card reveal stagger" style="--i:0">
+            <div class="tour-thumb"><img src="./assets/foto1.jpg" alt="Caminho do Céu"></div>
+            <span class="tour-tag">Caminho do Céu</span>
+            <div class="tour-body">
+              <h4 class="tour-title">Caminho do Céu</h4>
+              <p class="tour-desc">Trilha que leva a um dos mirantes mais deslumbrantes da região, com vista sobre os campos e as serras da Canastra.</p>
+              <div class="tour-footer">
                 <input type="date" id="date-caminho">
                 <button class="btn-block" onclick="sendWhatsApp('Caminho do Céu', 'date-caminho')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-          <article class="card">
-            <div class="thumb"><img src="./assets/foto2.jpg" alt="Cachoeira do Fundão"></div>
-            <span class="card-tag">Fundão</span>
-            <div class="card-body">
-              <h4 class="card-title">Fundão</h4>
-              <p class="card-desc">Passeio pelo icônico Cachoeira do Fundão, com trilhas entre formações rochosas e piscinas naturais de água cristalina.</p>
-              <div class="card-footer">
+          <article class="tour-card reveal stagger" style="--i:1">
+            <div class="tour-thumb"><img src="./assets/foto2.jpg" alt="Cachoeira do Fundão"></div>
+            <span class="tour-tag">Fundão</span>
+            <div class="tour-body">
+              <h4 class="tour-title">Fundão</h4>
+              <p class="tour-desc">Passeio pelo icônico Cachoeira do Fundão, com trilhas entre formações rochosas e piscinas naturais de água cristalina.</p>
+              <div class="tour-footer">
                 <input type="date" id="date-funda">
                 <button class="btn-block" onclick="sendWhatsApp('Fundão', 'date-funda')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-          <article class="card">
-            <div class="thumb"><img src="./assets/foto3.jpg" alt="Casca Danta Parte Alta"></div>
-            <span class="card-tag">Casca Danta</span>
-            <div class="card-body">
-              <h4 class="card-title">Casca Danta Parte Alta</h4>
-              <p class="card-desc">Subida à parte alta do Casca Danta, com panorâmicas incríveis e o ponto mais alto da Serra da Canastra.</p>
-              <div class="card-footer">
+          <article class="tour-card reveal stagger" style="--i:2">
+            <div class="tour-thumb"><img src="./assets/foto3.jpg" alt="Casca Danta Parte Alta"></div>
+            <span class="tour-tag">Casca Danta</span>
+            <div class="tour-body">
+              <h4 class="tour-title">Casca Danta Parte Alta</h4>
+              <p class="tour-desc">Subida à parte alta do Casca Danta, com panorâmicas incríveis e o ponto mais alto da Serra da Canastra.</p>
+              <div class="tour-footer">
                 <input type="date" id="date-casca">
                 <button class="btn-block" onclick="sendWhatsApp('Casca Danta Parte Alta', 'date-casca')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-          <article class="card">
-            <div class="thumb"><img src="./assets/foto4.jpg" alt="Vale da Babilônia"></div>
-            <span class="card-tag">Babilônia</span>
-            <div class="card-body">
-              <h4 class="card-title">Babilônia (Vale da Babilônia)</h4>
-              <p class="card-desc">Um vale de beleza singular, entre cachoeiras e formações que fazem da região um convite ao ecoturismo.</p>
-              <div class="card-footer">
+          <article class="tour-card reveal stagger" style="--i:3">
+            <div class="tour-thumb"><img src="./assets/foto4.jpg" alt="Vale da Babilônia"></div>
+            <span class="tour-tag">Babilônia</span>
+            <div class="tour-body">
+              <h4 class="tour-title">Babilônia (Vale da Babilônia)</h4>
+              <p class="tour-desc">Um vale de beleza singular, entre cachoeiras e formações que fazem da região um convite ao ecoturismo.</p>
+              <div class="tour-footer">
                 <input type="date" id="date-babilonia">
                 <button class="btn-block" onclick="sendWhatsApp('Babilônia (Vale da Babilônia)', 'date-babilonia')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Por que nos escolher -->
-      <section class="why reveal reveal-delay-3">
-        <div class="section-head">
-          <span class="eyebrow">Diferenciais</span>
-          <h2>Por que viajar com o <span>Alef</span></h2>
+    <!-- Diferenciais -->
+    <section id="diferenciais" class="reveal">
+      <div class="shell">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Por que viajar com o Alef</span>
+          <h2>Diferenciais <span>do guia</span></h2>
         </div>
         <div class="why-grid">
-          <article class="why-card">
+          <article class="why-card reveal stagger" style="--i:0">
             <span class="why-number">01</span>
             <h4>Guia credenciado</h4>
             <p>Credenciado pelo Parque Nacional da Serra da Canastra e Cadastur, com foco em segurança e responsabilidade ambiental.</p>
           </article>
-          <article class="why-card">
+          <article class="why-card reveal stagger" style="--i:1">
             <span class="why-number">02</span>
             <h4>Roteiros personalizados</h4>
             <p>Passeios de um dia, roteiros de 4 a 7 dias e experiências montadas conforme o perfil de cada visitante.</p>
           </article>
-          <article class="why-card">
+          <article class="why-card reveal stagger" style="--i:2">
             <span class="why-number">03</span>
             <h4>Cultura local</h4>
-            <p>Participa do projeto “Passaporte do Queijo”, conectando você à gastronomia e à tradição de Minas Gerais.</p>
+            <p>Participa do projeto &#8220;Passaporte do Queijo&#8221;, conectando você à gastronomia e à tradição de Minas Gerais.</p>
           </article>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Processo -->
-      <section class="process reveal reveal-delay-1">
-        <span class="eyebrow">Como funciona</span>
+    <!-- Processo -->
+    <section class="process reveal">
+      <div class="shell">
+        <span class="sec-eyebrow">Como funciona</span>
         <h2>Seu roteiro em <span>3 passos</span></h2>
         <p>Entre em contato, monte o roteiro e aproveite a Canastra.</p>
         <div class="steps">
-          <div class="step">
+          <div class="step reveal stagger" style="--i:0">
             <span class="step-kicker">Passo 1</span>
             <h4>Fale pelo WhatsApp</h4>
             <p>Conte quais lugares você quer conhecer e quantas pessoas vão viajar.</p>
           </div>
-          <div class="step">
+          <div class="step reveal stagger" style="--i:1">
             <span class="step-kicker">Passo 2</span>
             <h4>Monte o roteiro</h4>
             <p>O Alef define as datas, trilhas e cachoeiras que fazem sentido para o seu grupo.</p>
           </div>
-          <div class="step">
+          <div class="step reveal stagger" style="--i:2">
             <span class="step-kicker">Passo 3</span>
             <h4>Aproveite a Canastra</h4>
             <p>Basta seguir o guia e curtir as trilhas, cachoeiras e mirantes da região.</p>
           </div>
         </div>
-      </section>
-
-      <!-- Estatísticas -->
-      <div class="stats reveal reveal-delay-1">
-        <div class="stat">10+ <span>anos guiando na Canastra</span></div>
-        <div class="stat">50+ <span>trilhas e cachoeiras mapeadas</span></div>
-        <div class="stat">30+ <span>conservação e parceiros locais</span></div>
       </div>
+    </section>
 
-      <!-- Depoimentos -->
-      <section class="testimonials reveal reveal-delay-2">
-        <div class="section-head">
-          <span class="eyebrow">O que dizem os viajantes</span>
+    <!-- Estatísticas -->
+    <div class="stats reveal">
+      <div class="stat">10+ <span>anos guiando na Canastra</span></div>
+      <div class="stat">50+ <span>trilhas e cachoeiras mapeadas</span></div>
+      <div class="stat">30+ <span>parceiros e conservação locais</span></div>
+    </div>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="testimonials reveal">
+      <div class="shell">
+        <div class="sec-head">
+          <span class="sec-eyebrow">O que dizem os viajantes</span>
           <h2>Histórias de quem já <span>veio</span></h2>
         </div>
         <div class="testimonial-grid">
-          <article class="quote">
+          <article class="quote reveal stagger" style="--i:0">
             <span class="quote-mark">&#8220;</span>
-            <p>“Uma experiência inesquecível que realmente dá de volta. Viajei de forma bonita e responsável com o Alef.”</p>
-            <p class="author">Sarah L. <small>— Vargem Bonita, MG</small></p>
+            <p>&#8220;Uma experiência inesquecível que realmente dá de volta. Viajei de forma bonita e responsável com o Alef.&#8221;</p>
+            <p class="author">Sarah L. <small>&#8212; Vargem Bonita, MG</small></p>
             <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           </article>
-          <article class="quote">
+          <article class="quote reveal stagger" style="--i:1">
             <span class="quote-mark">&#8220;</span>
-            <p>“O equilíbrio perfeito entre aventura, conforto e impacto positivo. Altamente recomendado!”</p>
-            <p class="author">James T. <small>— Belo Horizonte, MG</small></p>
+            <p>&#8220;O equilíbrio perfeito entre aventura, conforto e impacto positivo. Altamente recomendado!&#8221;</p>
+            <p class="author">James T. <small>&#8212; Belo Horizonte, MG</small></p>
             <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           </article>
-          <article class="quote">
+          <article class="quote reveal stagger" style="--i:2">
             <span class="quote-mark">&#8220;</span>
-            <p>“Mais do que uma férias — um movimento. Não vejo a hora de viajar com o Alef de novo.”</p>
-            <p class="author">Priya M. <small>— São Paulo, SP</small></p>
+            <p>&#8220;Mais do que uma férias &#8212; um movimento. Não vejo a hora de viajar com o Alef de novo.&#8221;</p>
+            <p class="author">Priya M. <small>&#8212; São Paulo, SP</small></p>
             <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           </article>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- FAQ -->
-      <section class="faq reveal reveal-delay-3">
-        <div class="section-head">
-          <span class="eyebrow">Perguntas frequentes</span>
+    <!-- FAQ -->
+    <section id="faq" class="reveal">
+      <div class="shell">
+        <div class="sec-head">
+          <span class="sec-eyebrow">Perguntas frequentes</span>
           <h2>Tudo que você precisa <span>saber</span></h2>
         </div>
         <div class="faq-list">
@@ -883,58 +888,57 @@
             <div class="faq-answer">O transporte até os atrativos é combinado com o Alef no momento do agendamento, de acordo com o roteiro escolhido.</div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- CTA final -->
-      <section class="final-cta reveal reveal-delay-1">
+    <!-- CTA final -->
+    <section class="final-cta reveal">
+      <div class="shell">
         <h2>Pronto para conhecer a <span>Canastra</span>?</h2>
         <p>Entre em contato pelo WhatsApp e reserve seu roteiro de ecoturismo com o Guia Alef.</p>
         <a href="https://wa.me/5531992893251?text=Ol%C3%A1%20Alef!%20Tenho%20interesse%20em%20fazer%20um%20roteiro%20pela%20Serra%20da%20Canastra.%20Gostaria%20de%20saber%20mais%20informa%C3%A7%C3%B5es." class="btn-whatsapp" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
-      </section>
+      </div>
+    </section>
+  </main>
 
-      <!-- Footer -->
-      <footer>
-        <div class="footer-credits">Alef &#8226; Guia credenciado Serra da Canastra &#8226; Vargem Bonita, MG</div>
-        <p style="font-size:0.8rem; color:var(--ink-soft);">Ecoturismo responsável &#8226; Trilhas &#8226; Cachoeiras &#8226; Mirantes</p>
-      </footer>
-    </div>
+  <footer>
+    <div class="footer-credits">Alef &#8226; Guia credenciado Serra da Canastra &#8226; Vargem Bonita, MG</div>
+    <p style="font-size: 11px;">Ecoturismo responsável &#8226; Trilhas &#8226; Cachoeiras &#8226; Mirantes</p>
+  </footer>
 
-    <!-- Menu mobile -->
-    <nav class="nav-mobile" id="navMobile">
-      <button class="nav-mobile-close" id="navClose" aria-label="Fechar menu">&#215;</button>
-      <a href="#passeios">Roteiros</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#diferenciais">Diferenciais</a>
-      <a href="#faq">Perguntas frequentes</a>
-      <a href="https://wa.me/5531992893251" class="btn-whatsapp" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
-    </nav>
-  </div>
+  <!-- Menu mobile -->
+  <nav class="nav-mobile" id="navMobile">
+    <button class="nav-mobile-close" id="navClose" aria-label="Fechar menu">&#215;</button>
+    <a href="#sobre">Quem guia</a>
+    <a href="#passeios">Roteiros</a>
+    <a href="#diferenciais">Diferenciais</a>
+    <a href="#faq">Perguntas frequentes</a>
+    <a href="https://wa.me/5531992893251" target="_blank" rel="noopener" style="margin-top:24px;display:inline-block;padding:14px 26px;background:var(--green-dark);color:#fff;border-radius:8px;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase">Falar pelo WhatsApp &#8594;</a>
+  </nav>
 
   <script>
-    // Reveal on scroll
+    /* Reveal on scroll */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal, .reveal-left').forEach(el => observer.observe(el));
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    /* Menu mobile */
     const menuToggle = document.getElementById('menuToggle');
     const navClose = document.getElementById('navClose');
     const navMobile = document.getElementById('navMobile');
-
-    function openMenu() { navMobile.classList.add('open'); }
-    function closeMenu() { navMobile.classList.remove('open'); }
-
+    function openMenu() { navMobile.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { navMobile.classList.remove('open'); document.body.style.overflow = ''; }
     menuToggle.addEventListener('click', openMenu);
     navClose.addEventListener('click', closeMenu);
+    navMobile.querySelectorAll('a').forEach(link => { link.addEventListener('click', closeMenu); });
 
-    // Fechar menu ao clicar em um link
-    navMobile.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', closeMenu);
-    });
+    /* FAQ accordion */
     function toggleFaq(btn) {
       const item = btn.parentElement;
       const open = item.classList.toggle('open');
@@ -942,14 +946,12 @@
       arrow.textContent = open ? '&#9660;' : '&#9654;';
     }
 
-    // WhatsApp roteiros
+    /* WhatsApp roteiros */
     function sendWhatsApp(tourName, dateInputId) {
       const input = document.getElementById(dateInputId);
       const date = input ? input.value : '';
       let message = `Olá Alef! Tenho interesse no roteiro ${tourName}`;
-      if (date) {
-        message += ` para a data ${date}`;
-      }
+      if (date) { message += ` para a data ${date}`; }
       message += '. Gostaria de saber mais informações.';
       const url = 'https://wa.me/5531992893251?text=' + encodeURIComponent(message);
       window.open(url, '_blank');
