@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#2C4C3B">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1f3a2e">
   <title>Alef - Guia Serra da Canastra</title>
   <meta name="description" content="Descubra a Serra da Canastra com o Guia Alef. Roteiros de ecoturismo, trilhas e cachoeiras saindo de Vargem Bonita, MG.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,21 +11,37 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* =========================================
-       Reset & base
+       Design tokens
        ========================================= */
-    *, *::before, *::after {
-      box-sizing: border-box;
+    :root {
+      --bg: #F7F4EE;
+      --surface: #FFFFFF;
+      --ink: #1f2a24;
+      --ink-soft: #4a5a50;
+      --green-dark: #1f3a2e;
+      --green: #2C4C3B;
+      --green-light: #dce8dd;
+      --accent: #c9a255;
+      --line: #e4d9c8;
+      --radius: 24px;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+      --max-width: 1080px;
+      --shell-width: 900px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
     html {
       scroll-behavior: smooth;
-      font-size: 16px;
       -webkit-tap-highlight-color: transparent;
     }
     body {
       margin: 0;
       padding: 0;
-      background: #F4F1EB;
-      color: #273029;
+      background: var(--bg);
+      color: var(--ink);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: 1rem;
       line-height: 1.6;
@@ -41,478 +57,892 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; height: auto; }
     ul { margin: 0; padding: 0; list-style: none; }
-    :focus-visible { outline: 2px solid #2C4C3B; outline-offset: 3px; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
 
     /* =========================================
-       App shell
+       Shell
        ========================================= */
-    .page {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .container {
-      width: 100%;
-      max-width: 100%;
+    .page { display: flex; flex-direction: column; min-height: 100vh; }
+    .shell {
+      max-width: var(--shell-width);
       margin: 0 auto;
-      padding: 0;
-      overflow-x: hidden;
-    }
-    .app-shell {
-      max-width: 390px;
-      margin: 0 auto;
-    }
-    @media (min-width: 768px) {
-      .app-shell {
-        max-width: 700px;
-      }
+      padding: 0 24px;
     }
 
     /* =========================================
-       Header / Hero
+       Header
        ========================================= */
     header {
       position: relative;
-      min-height: 64vh;
+      padding: 48px 0 0;
+    }
+    .nav {
       display: flex;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 16px;
     }
-    header .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.16) 100%),
-                  url('./assets/capa.jpg') center/cover no-repeat;
+    .logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: -0.02em;
     }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 64px 24px 32px;
-      max-width: 320px;
-      color: #ffffff;
+    .logo span { color: var(--green); }
+    .nav-links { display: none; gap: 28px; font-size: 0.9rem; font-weight: 500; color: var(--ink-soft); }
+    .nav-links a { color: var(--ink-soft); }
+    .nav-links a:hover { color: var(--green-dark); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .kicker {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #BFD8C8;
-      margin-bottom: 12px;
-      display: block;
-    }
-    h1 {
-      font-size: 2rem;
-      line-height: 1.25;
-      margin-bottom: 18px;
-      color: #ffffff;
-    }
-    h1 strong {
-      display: block;
-    }
-    .hero-sub {
-      font-size: 1.05rem;
-      opacity: 0.95;
-      margin-bottom: 26px;
-      line-height: 1.7;
-    }
-    .hero-scroll {
-      position: relative;
-      z-index: 2;
-      margin-top: 10px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+    .btn-ghost {
+      font-size: 0.85rem;
       font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #ffffff;
-      opacity: 0.85;
+      color: var(--ink);
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
     }
+    .btn-ghost:hover { background: var(--green-light); }
+    .btn-primary {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffffff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 999px;
+      background: var(--green-dark);
+      cursor: pointer;
+    }
+    .btn-primary:hover { filter: brightness(1.12); }
 
     /* =========================================
-       Sections
+       Hero
        ========================================= */
-    section {
-      padding: 56px 24px;
+    .hero {
+      position: relative;
+      padding: 0 0 56px;
+      overflow: hidden;
     }
+    .hero .figure {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: var(--green-light);
+    }
+    .hero .figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1);
+      transition: transform 0.6s ease;
+    }
+    .hero .figure:hover img { transform: scale(1.03); }
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .hero h1 {
+      font-size: 2.4rem;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .hero h1 strong { color: var(--green-dark); }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      max-width: 38ch;
+      margin-bottom: 22px;
+    }
+    .hero .btn-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      padding: 12px 22px;
+      border: 2px solid var(--green-dark);
+      border-radius: 999px;
+      background: var(--surface);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero .btn-cta:hover { background: var(--green-dark); color: #ffffff; }
+
+    /* =========================================
+       Section headings
+       ========================================= */
     .section-head {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
     .section-head .eyebrow {
-      font-family: 'Inter', sans-serif;
       font-size: 0.75rem;
       font-weight: 600;
-      text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #2C4C3B;
-      display: block;
-      margin-bottom: 10px;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+      display: inline-block;
     }
     .section-head h2 {
-      font-size: 1.6rem;
-      color: #1f2a24;
-      line-height: 1.35;
+      font-size: 1.7rem;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 10px;
     }
-    .section-head h2 span {
-      color: #2C4C3B;
-    }
+    .section-head h2 span { color: var(--green-dark); }
     .section-head p {
-      margin-top: 14px;
-      font-size: 0.95rem;
-      color: #5a6b5f;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      max-width: 46ch;
+      margin: 0 auto;
     }
 
     /* =========================================
        Sobre o guia
        ========================================= */
     .about {
-      max-width: 320px;
-      margin: 0 auto 56px;
-      text-align: left;
+      padding: 32px 20px;
+      margin-bottom: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+      max-width: var(--shell-width);
     }
-    .about .quote-mark {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 2.6rem;
-      color: #2C4C3B;
-      line-height: 1;
-      margin-bottom: 8px;
-      display: inline-block;
+    @media (min-width: 700px) {
+      .about { flex-direction: row; align-items: center; padding: 40px 32px; }
     }
-    .about p {
-      font-size: 1.05rem;
-      line-height: 1.9;
-      color: #3d4a42;
-      margin-bottom: 22px;
-    }
-    .about p:last-child { margin-bottom: 0; }
-    .about p strong {
-      color: #1f2a24;
-    }
-
-    /* =========================================
-       Cartões de roteiros
-       ========================================= */
-    .tours-grid {
-      max-width: 360px;
-      margin: 0 auto;
-    }
-    .tour-card {
-      position: relative;
-      border-radius: 28px;
+    .about-image {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
       overflow: hidden;
-      margin-bottom: 22px;
-      background: #ffffff;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-      border: 1px solid rgba(44,76,59,0.06);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 3px solid var(--green-dark);
+      background: var(--green-light);
+      flex-shrink: 0;
     }
-    .tour-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 44px rgba(0,0,0,0.12);
-    }
-    .tour-card .thumb {
-      position: relative;
-      width: 100%;
-      height: 300px;
-      background: #E4DCCF;
-      overflow: hidden;
-    }
-    .tour-card .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-      opacity: 0.92;
-    }
-    .tour-card:hover .thumb img {
-      transform: scale(1.04);
-    }
-    .tour-tag {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      font-family: 'Inter', sans-serif;
+    .about-image img { width: 100%; height: 100%; object-fit: cover; }
+    .about-text { flex: 1; }
+    .about .eyebrow {
       font-size: 0.8rem;
       font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--green-dark);
+      margin: 0;
+      display: inline-block;
+    }
+    .about h3 {
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin: 6px 0 10px;
+    }
+    .about p {
+      color: var(--ink-soft);
+      line-height: 1.75;
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+    }
+    .about p strong { color: var(--ink); }
+    .about p:last-child { margin-bottom: 0; }
+
+    /* =========================================
+       Passeios / destaque
+       ========================================= */
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+    .grid-two { grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .grid-two { grid-template-columns: repeat(2, 1fr); } }
+    .grid-three { grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .grid-three { grid-template-columns: repeat(3, 1fr); } }
+
+    .card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.08); }
+    .card .thumb {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: var(--green-light);
+      overflow: hidden;
+    }
+    .card .thumb img { width: 100%; height: 100%; object-fit: cover; transform: scale(1); transition: transform 0.5s ease; }
+    .card:hover .thumb img { transform: scale(1.04); }
+    .card-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
       letter-spacing: 0.08em;
-      background: rgba(44,76,59,0.92);
       color: #ffffff;
-      padding: 6px 14px;
+      background: rgba(31, 58, 46, 0.92);
+      padding: 5px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.5);
       backdrop-filter: blur(6px);
-      z-index: 3;
     }
-    .tour-body {
-      padding: 20px 22px 24px;
-    }
-    .tour-title {
+    .card-body { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
+    .card-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.35rem;
-      color: #1f2a24;
+      font-size: 1.15rem;
+      color: var(--ink);
       margin-bottom: 6px;
     }
-    .tour-desc {
-      font-size: 0.92rem;
-      color: #5a6b5f;
-      line-height: 1.65;
-      margin-bottom: 18px;
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      flex: 1;
     }
-    .tour-actions {
+    .card-footer {
+      margin-top: auto;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-direction: column;
     }
     input[type="date"] {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid #cfd8c9;
-      background: #ffffff;
-      color: #273029;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      appearance: none;
-      -webkit-appearance: none;
+      font-size: 0.85rem;
     }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(33%) grayscale(100%) brightness(0.7);
-      cursor: pointer;
-    }
-    input[type="date"]:focus {
-      border-color: #2C4C3B;
-      box-shadow: 0 0 0 4px rgba(44,76,59,0.12);
-      outline: none;
-    }
-    .btn-verify {
+    .btn-block {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #2C4C3B;
-      color: #ffffff;
+      padding: 11px 14px;
+      border-radius: 10px;
       border: none;
+      background: var(--green-dark);
+      color: #ffffff;
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
       cursor: pointer;
-      transition: background 0.2s ease, transform 0.1s ease;
+      transition: transform 0.15s ease, filter 0.2s ease;
     }
-    .btn-verify:hover { background: #243d2f; }
-    .btn-verify:active { transform: scale(0.98); }
-    .btn-verify:focus-visible {
-      outline: 2px solid #2C4C3B;
-      outline-offset: 3px;
+    .btn-block:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .btn-block:active { transform: translateY(0); }
+
+    /* =========================================
+       Por que nos escolher / processo
+       ========================================= */
+    .why {
+      margin-bottom: 40px;
+    }
+    .why-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 700px) { .why-grid { grid-template-columns: repeat(3, 1fr); } }
+    .why-card {
+      padding: 22px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+    .why-card:hover { transform: translateY(-4px); border-color: var(--green-light); }
+    .why-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      line-height: 1;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    .why-card h4 {
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .why-card p {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    .process {
+      background: var(--green-dark);
+      color: #ffffff;
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .process .eyebrow { color: var(--accent); }
+    .process h2 { color: #ffffff; margin-bottom: 10px; font-size: 1.7rem; }
+    .process p { color: rgba(255,255,255,0.85); max-width: 46ch; margin: 0 auto 28px; font-size: 0.9rem; }
+    .steps { display: flex; gap: 16px; flex-direction: column; align-items: center; }
+    @media (min-width: 700px) { .steps { flex-direction: row; justify-content: center; } }
+    .step {
+      width: 200px;
+      text-align: center;
+    }
+    .step-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .step h4 {
+      font-size: 1.1rem;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .step p { color: rgba(255,255,255,0.8); font-size: 0.85rem; line-height: 1.5; }
+
+    /* =========================================
+       Estatísticas
+       ========================================= */
+    .stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .stat {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+    .stat span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      display: block;
+      margin-top: 3px;
     }
 
     /* =========================================
-       Mais aventuras (pills)
+       Depoimentos
        ========================================= */
-    .adventures {
-      background: #ffffff;
+    .testimonials {
+      margin-bottom: 40px;
     }
-    .adventures .section-head { text-align: center; }
-    .pills-grid {
-      max-width: 340px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+    .testimonial-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 700px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+    .quote {
+      padding: 22px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
     }
-    .pill {
+    .quote:hover { transform: translateY(-4px); border-color: var(--green-light); }
+    .quote-mark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      color: var(--green-dark);
+      line-height: 1;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .quote p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .author {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .author small {
+      font-weight: 400;
+      color: var(--ink-soft);
+      font-size: 0.75rem;
+    }
+
+    .stars {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      letter-spacing: 2px;
+    }
+
+    /* =========================================
+       FAQ
+       ========================================= */
+    .faq {
+      margin-bottom: 40px;
+    }
+    .faq-item {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      margin-bottom: 10px;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 14px 20px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 500;
-      color: #2C4C3B;
-      background: #E9F1EB;
-      border: 1px solid rgba(44,76,59,0.10);
-      border-radius: 999px;
-      padding: 12px 16px;
-      text-align: center;
-      transition: background 0.2s ease, transform 0.1s ease;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s ease, color 0.2s ease;
     }
-    .pill:hover { background: #DDE9CF; transform: translateY(-2px); }
+    .faq-question:hover { background: var(--bg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px 16px;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      transition: max-height 0.4s var(--ease), padding 0.4s var(--ease);
+    }
+    .faq-item.open .faq-answer { max-height: 260px; }
+    .faq-item.open .faq-question { color: var(--green-dark); }
+
+    /* =========================================
+       CTA final
+       ========================================= */
+    .final-cta {
+      text-align: center;
+      padding: 50px 24px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      margin-bottom: 40px;
+      transition: transform 0.3s var(--ease);
+    }
+    .final-cta:hover { transform: translateY(-4px); }
+    .final-cta h2 { font-size: 1.7rem; color: var(--ink); margin-bottom: 10px; }
+    .final-cta p { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 22px; font-size: 0.9rem; }
+    .btn-whatsapp {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      padding: 14px 26px;
+      border-radius: 999px;
+      background: #25D366;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+    }
+    .btn-whatsapp:hover { filter: brightness(1.08); }
 
     /* =========================================
        Footer
        ========================================= */
     footer {
-      border-top: 1px solid rgba(44,76,59,0.08);
-      padding: 40px 24px 60px;
+      border-top: 1px solid var(--line);
+      padding: 40px 24px 56px;
       text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.8rem;
     }
-    .footer-note {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
-      color: #5a6b5f;
-      margin-bottom: 6px;
-    }
-    .whatsapp {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 22px;
-      border-radius: 16px;
-      background: #2C4C3B;
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-top: 10px;
-      transition: background 0.2s ease;
-    }
-    .whatsapp:hover { background: #243d2f; }
+    .footer-credits { margin-bottom: 10px; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--ink-soft); }
+
+    /* Reveal utilities — keep reveal classes working for the stats wrapper too */
+    .stats.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    .stats.reveal.revealed { opacity: 1; transform: translateY(0); }
 
     /* =========================================
-       Responsive tweaks
+       Menu mobile
        ========================================= */
-    @media (min-width: 420px) {
-      .container { max-width: 414px; }
-      h1 { font-size: 2.35rem; }
-      .section-head h2 { font-size: 1.9rem; }
-      .tour-card .thumb { height: 330px; }
-      .pills-grid { max-width: 400px; }
+    .menu-toggle {
+      position: fixed;
+      inset: 0 0 0 0;
+      background: var(--surface);
+      z-index: 100;
+      padding: 70px 24px 40px;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      border-right: 1px solid var(--line);
+      max-width: 280px;
+      width: 100%;
     }
+    .nav-mobile.open { transform: translateX(0); }
+    .nav-mobile-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--ink);
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nav-mobile a {
+      display: block;
+      padding: 14px 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-mobile a:hover { color: var(--green-dark); }
+    .nav-mobile .btn-whatsapp {
+      margin-top: 24px;
+      display: inline-flex;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 0;
+      box-shadow: none;
+    }
+
+    @media (min-width: 700px) {
+      .menu-toggle { display: none; }
+      .nav-links { display: flex; }
+      .nav-mobile { display: none; }
+      .hero { padding: 0 0 72px; }
+      .hero .figure { height: 420px; }
+      .hero h1 { font-size: 3rem; }
+      .hero-sub { font-size: 1.05rem; }
+      .section-head h2 { font-size: 2rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <div class="container">
-      <div class="app-shell">
-      <!-- Header / Hero -->
-      <header id="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-          <span class="kicker">Guia credenciado &#8226; Serra da Canastra</span>
-          <h1><strong>Descubra a Serra da Canastra</strong>com o Guia Alef</h1>
-          <p class="hero-sub">Roteiros de ecoturismo responsável, trilhas, cachoeiras e mirantes, com vivências autênticas na natureza de Minas Gerais.</p>
-          <span class="hero-scroll">Deslize para conhecer os roteiros &#8595;</span>
-        </div>
+    <div class="shell">
+      <!-- Header -->
+      <header>
+        <nav class="nav">
+          <div class="logo">Alef <span>Canastra</span></div>
+          <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-actions">
+            <a href="#passeios" class="btn-ghost">Roteiros</a>
+            <a href="https://wa.me/5531992893251" class="btn-primary" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </nav>
       </header>
 
-      <!-- Sobre o Guia -->
-      <section>
-        <div class="about">
-          <span class="quote-mark">&#8220;</span>
-          <p><strong>Guia credenciado pelo Parque Nacional da Serra da Canastra</strong> (Cadastur nº 39259562000190 / SEI 10966906), o Alef atua há anos oferecendo experiências completas e seguras pela região.</p>
-          <p>Baseado em <strong>Vargem Bonita (MG)</strong> &#8212; porta de entrada da Canastra &#8212; ele conduz roteiros que exploram as principais cachoeiras, trilhas e mirantes, sempre com foco em ecoturismo responsável e vivências autênticas na natureza.</p>
-          <p>Alef também participa do projeto <strong>&#8220;Passaporte do Queijo&#8221;</strong>, conectando o visitante à rica cultura e gastronomia local.</p>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="figure">
+          <img src="./assets/capa.jpg" alt="Cachoeira da Serra da Canastra">
+        </div>
+        <div class="hero-content" style="max-width: 36ch;">
+          <span class="hero-eyebrow">Guia credenciado &#8226; Serra da Canastra, MG</span>
+          <h1><strong>Descubra a Serra da Canastra</strong> com o Guia Alef</h1>
+          <p class="hero-sub">Roteiros de ecoturismo responsável, trilhas, cachoeiras e mirantes saindo de Vargem Bonita, com vivências autênticas na natureza mineira.</p>
+          <a href="https://wa.me/5531992893251" class="btn-cta" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
         </div>
       </section>
 
-      <!-- Passeios principais -->
-      <section>
+      <!-- Sobre -->
+      <section class="about reveal reveal-delay-1">
+        <span class="eyebrow">Quem guia</span>
+        <div class="about-image">
+          <img src="./fotos/alef.jpg" alt="Foto do guia Alef">
+        </div>
+        <div class="about-text">
+          <h3>Conheça o Alef</h3>
+          <p><strong>Guia credenciado pelo Parque Nacional da Serra da Canastra</strong> (Cadastur nº 39259562000190 / SEI 10966906), o Alef atua há anos oferecendo experiências completas e seguras pela região.</p>
+          <p>Baseado em <strong>Vargem Bonita (MG)</strong> — porta de entrada da Canastra — ele conduz roteiros que exploram as principais cachoeiras, trilhas e mirantes, sempre com foco em ecoturismo responsável.</p>
+          <p>Participa também do projeto <strong>“Passaporte do Queijo”</strong>, conectando o visitante à cultura e à gastronomia local.</p>
+        </div>
+      </section>
+
+      <!-- Passeios -->
+      <section id="passeios" class="reveal reveal-delay-2">
         <div class="section-head">
           <span class="eyebrow">Roteiros em destaque</span>
           <h2>Escolha sua <span>aventura</span></h2>
-          <p>Sem preços aqui &#8212; selecione a data e fale direto com o Alef pelo WhatsApp.</p>
+          <p>Sem preços aqui — selecione a data e fale direto com o Alef pelo WhatsApp.</p>
         </div>
-        <div class="tours-grid">
-          <!-- Card 1: Caminho do Céu -->
-          <article class="tour-card">
-            <div class="thumb">
-              <img src="./assets/foto1.jpg" alt="Caminho do Céu">
-              <span class="tour-tag">Caminho do Céu</span>
-            </div>
-            <div class="tour-body">
-              <h3 class="tour-title">Caminho do Céu</h3>
-              <p class="tour-desc">Trilha que leva a um dos mirantes mais deslumbrantes da região, com vista sobre os campos e as serras da Canastra.</p>
-              <div class="tour-actions">
+        <div class="grid grid-three">
+          <article class="card">
+            <div class="thumb"><img src="./assets/foto1.jpg" alt="Caminho do Céu"></div>
+            <span class="card-tag">Caminho do Céu</span>
+            <div class="card-body">
+              <h4 class="card-title">Caminho do Céu</h4>
+              <p class="card-desc">Trilha que leva a um dos mirantes mais deslumbrantes da região, com vista sobre os campos e as serras da Canastra.</p>
+              <div class="card-footer">
                 <input type="date" id="date-caminho">
-                <button class="btn-verify" onclick="sendWhatsApp('Caminho do Céu', 'date-caminho')">Verificar Disponibilidade</button>
+                <button class="btn-block" onclick="sendWhatsApp('Caminho do Céu', 'date-caminho')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-
-          <!-- Card 2: Fundão -->
-          <article class="tour-card">
-            <div class="thumb">
-              <img src="./assets/foto2.jpg" alt="Fundão">
-              <span class="tour-tag">Fundão</span>
-            </div>
-            <div class="tour-body">
-              <h3 class="tour-title">Fundão</h3>
-              <p class="tour-desc">Passeio pelo icônico Cachoeira do Fundão, com trilhas entre formações rochosas e piscinas naturais de água cristalina.</p>
-              <div class="tour-actions">
+          <article class="card">
+            <div class="thumb"><img src="./assets/foto2.jpg" alt="Cachoeira do Fundão"></div>
+            <span class="card-tag">Fundão</span>
+            <div class="card-body">
+              <h4 class="card-title">Fundão</h4>
+              <p class="card-desc">Passeio pelo icônico Cachoeira do Fundão, com trilhas entre formações rochosas e piscinas naturais de água cristalina.</p>
+              <div class="card-footer">
                 <input type="date" id="date-funda">
-                <button class="btn-verify" onclick="sendWhatsApp('Fundão', 'date-funda')">Verificar Disponibilidade</button>
+                <button class="btn-block" onclick="sendWhatsApp('Fundão', 'date-funda')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-
-          <!-- Card 3: Casca Danta Parte Alta -->
-          <article class="tour-card">
-            <div class="thumb">
-              <img src="./assets/foto3.jpg" alt="Casca Danta Parte Alta">
-              <span class="tour-tag">Casca Danta Parte Alta</span>
-            </div>
-            <div class="tour-body">
-              <h3 class="tour-title">Casca Danta Parte Alta</h3>
-              <p class="tour-desc">Subida à parte alta do Casca Danta, com panorâmicas incríveis e o ponto mais alto da Serra da Canastra.</p>
-              <div class="tour-actions">
+          <article class="card">
+            <div class="thumb"><img src="./assets/foto3.jpg" alt="Casca Danta Parte Alta"></div>
+            <span class="card-tag">Casca Danta</span>
+            <div class="card-body">
+              <h4 class="card-title">Casca Danta Parte Alta</h4>
+              <p class="card-desc">Subida à parte alta do Casca Danta, com panorâmicas incríveis e o ponto mais alto da Serra da Canastra.</p>
+              <div class="card-footer">
                 <input type="date" id="date-casca">
-                <button class="btn-verify" onclick="sendWhatsApp('Casca Danta Parte Alta', 'date-casca')">Verificar Disponibilidade</button>
+                <button class="btn-block" onclick="sendWhatsApp('Casca Danta Parte Alta', 'date-casca')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
-
-          <!-- Card 4: Babilônia (Vale da Babilônia) -->
-          <article class="tour-card">
-            <div class="thumb">
-              <img src="./assets/foto4.jpg" alt="Babilônia">
-              <span class="tour-tag">Babilônia</span>
-            </div>
-            <div class="tour-body">
-              <h3 class="tour-title">Babilônia (Vale da Babilônia)</h3>
-              <p class="tour-desc">Um vale de beleza singular, entre cachoeiras e formações que fazem da região um convite ao ecoturismo.</p>
-              <div class="tour-actions">
+          <article class="card">
+            <div class="thumb"><img src="./assets/foto4.jpg" alt="Vale da Babilônia"></div>
+            <span class="card-tag">Babilônia</span>
+            <div class="card-body">
+              <h4 class="card-title">Babilônia (Vale da Babilônia)</h4>
+              <p class="card-desc">Um vale de beleza singular, entre cachoeiras e formações que fazem da região um convite ao ecoturismo.</p>
+              <div class="card-footer">
                 <input type="date" id="date-babilonia">
-                <button class="btn-verify" onclick="sendWhatsApp('Babilônia (Vale da Babilônia)', 'date-babilonia')">Verificar Disponibilidade</button>
+                <button class="btn-block" onclick="sendWhatsApp('Babilônia (Vale da Babilônia)', 'date-babilonia')">Verificar disponibilidade</button>
               </div>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- Mais aventuras -->
-      <section class="adventures">
+      <!-- Por que nos escolher -->
+      <section class="why reveal reveal-delay-3">
         <div class="section-head">
-          <span class="eyebrow">Mais aventuras</span>
-          <h2>Roteiros <span>personalizados</span></h2>
+          <span class="eyebrow">Diferenciais</span>
+          <h2>Por que viajar com o <span>Alef</span></h2>
         </div>
-        <p style="text-align:center; font-size:0.95rem; color:#5a6b5f; margin-bottom:22px;">Roteiros Personalizados e Experiências Exclusivas:</p>
-        <div class="pills-grid">
-          <span class="pill">Experiências 360° de 4, 5, 6 e 7 dias</span>
-          <span class="pill">Roteiros personalizados conforme o perfil do visitante</span>
-          <span class="pill">Passeios de 1 dia para atrativos principais</span>
-          <span class="pill">Trekking das Orquídeas</span>
-          <span class="pill">Complexo Capão Forró</span>
-          <span class="pill">Parte Alta e Baixa da Canastra</span>
+        <div class="why-grid">
+          <article class="why-card">
+            <span class="why-number">01</span>
+            <h4>Guia credenciado</h4>
+            <p>Credenciado pelo Parque Nacional da Serra da Canastra e Cadastur, com foco em segurança e responsabilidade ambiental.</p>
+          </article>
+          <article class="why-card">
+            <span class="why-number">02</span>
+            <h4>Roteiros personalizados</h4>
+            <p>Passeios de um dia, roteiros de 4 a 7 dias e experiências montadas conforme o perfil de cada visitante.</p>
+          </article>
+          <article class="why-card">
+            <span class="why-number">03</span>
+            <h4>Cultura local</h4>
+            <p>Participa do projeto “Passaporte do Queijo”, conectando você à gastronomia e à tradição de Minas Gerais.</p>
+          </article>
         </div>
+      </section>
+
+      <!-- Processo -->
+      <section class="process reveal reveal-delay-1">
+        <span class="eyebrow">Como funciona</span>
+        <h2>Seu roteiro em <span>3 passos</span></h2>
+        <p>Entre em contato, monte o roteiro e aproveite a Canastra.</p>
+        <div class="steps">
+          <div class="step">
+            <span class="step-kicker">Passo 1</span>
+            <h4>Fale pelo WhatsApp</h4>
+            <p>Conte quais lugares você quer conhecer e quantas pessoas vão viajar.</p>
+          </div>
+          <div class="step">
+            <span class="step-kicker">Passo 2</span>
+            <h4>Monte o roteiro</h4>
+            <p>O Alef define as datas, trilhas e cachoeiras que fazem sentido para o seu grupo.</p>
+          </div>
+          <div class="step">
+            <span class="step-kicker">Passo 3</span>
+            <h4>Aproveite a Canastra</h4>
+            <p>Basta seguir o guia e curtir as trilhas, cachoeiras e mirantes da região.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Estatísticas -->
+      <div class="stats reveal reveal-delay-1">
+        <div class="stat">10+ <span>anos guiando na Canastra</span></div>
+        <div class="stat">50+ <span>trilhas e cachoeiras mapeadas</span></div>
+        <div class="stat">30+ <span>conservação e parceiros locais</span></div>
+      </div>
+
+      <!-- Depoimentos -->
+      <section class="testimonials reveal reveal-delay-2">
+        <div class="section-head">
+          <span class="eyebrow">O que dizem os viajantes</span>
+          <h2>Histórias de quem já <span>veio</span></h2>
+        </div>
+        <div class="testimonial-grid">
+          <article class="quote">
+            <span class="quote-mark">&#8220;</span>
+            <p>“Uma experiência inesquecível que realmente dá de volta. Viajei de forma bonita e responsável com o Alef.”</p>
+            <p class="author">Sarah L. <small>— Vargem Bonita, MG</small></p>
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">&#8220;</span>
+            <p>“O equilíbrio perfeito entre aventura, conforto e impacto positivo. Altamente recomendado!”</p>
+            <p class="author">James T. <small>— Belo Horizonte, MG</small></p>
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">&#8220;</span>
+            <p>“Mais do que uma férias — um movimento. Não vejo a hora de viajar com o Alef de novo.”</p>
+            <p class="author">Priya M. <small>— São Paulo, SP</small></p>
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq reveal reveal-delay-3">
+        <div class="section-head">
+          <span class="eyebrow">Perguntas frequentes</span>
+          <h2>Tudo que você precisa <span>saber</span></h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Preciso agendar com antecedência? <span>&#9654;</span></button>
+            <div class="faq-answer">Sim. Recomendamos entrar em contato com pelo menos alguns dias de antecedência para garantir a data e a disponibilidade do guia.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Os roteiros são indicados para crianças? <span>&#9654;</span></button>
+            <div class="faq-answer">Sim. O Alef ajusta o ritmo e o percurso conforme o perfil do grupo, incluindo famílias com crianças.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">O que está incluído no passeio? <span>&#9654;</span></button>
+            <div class="faq-answer">Acompanhamento do guia credenciado, roteiro definido com você e dicas das melhores trilhas, cachoeiras e mirantes da região.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Preciso de carro próprio? <span>&#9654;</span></button>
+            <div class="faq-answer">O transporte até os atrativos é combinado com o Alef no momento do agendamento, de acordo com o roteiro escolhido.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA final -->
+      <section class="final-cta reveal reveal-delay-1">
+        <h2>Pronto para conhecer a <span>Canastra</span>?</h2>
+        <p>Entre em contato pelo WhatsApp e reserve seu roteiro de ecoturismo com o Guia Alef.</p>
+        <a href="https://wa.me/5531992893251?text=Ol%C3%A1%20Alef!%20Tenho%20interesse%20em%20fazer%20um%20roteiro%20pela%20Serra%20da%20Canastra.%20Gostaria%20de%20saber%20mais%20informa%C3%A7%C3%B5es." class="btn-whatsapp" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
       </section>
 
       <!-- Footer -->
       <footer>
-        <p class="footer-note">Quer conversar antes de escolher?</p>
-        <a href="https://wa.me/553192893251" class="whatsapp" target="_blank" rel="noopener">
-          &#9993; Falar com o Alef pelo WhatsApp
-        </a>
+        <div class="footer-credits">Alef &#8226; Guia credenciado Serra da Canastra &#8226; Vargem Bonita, MG</div>
+        <p style="font-size:0.8rem; color:var(--ink-soft);">Ecoturismo responsável &#8226; Trilhas &#8226; Cachoeiras &#8226; Mirantes</p>
       </footer>
+    </div>
 
-    </div>
-      </div>
-    </div>
+    <!-- Menu mobile -->
+    <nav class="nav-mobile" id="navMobile">
+      <button class="nav-mobile-close" id="navClose" aria-label="Fechar menu">&#215;</button>
+      <a href="#passeios">Roteiros</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#diferenciais">Diferenciais</a>
+      <a href="#faq">Perguntas frequentes</a>
+      <a href="https://wa.me/5531992893251" class="btn-whatsapp" target="_blank" rel="noopener">Falar pelo WhatsApp &#8594;</a>
+    </nav>
   </div>
 
   <script>
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const menuToggle = document.getElementById('menuToggle');
+    const navClose = document.getElementById('navClose');
+    const navMobile = document.getElementById('navMobile');
+
+    function openMenu() { navMobile.classList.add('open'); }
+    function closeMenu() { navMobile.classList.remove('open'); }
+
+    menuToggle.addEventListener('click', openMenu);
+    navClose.addEventListener('click', closeMenu);
+
+    // Fechar menu ao clicar em um link
+    navMobile.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      const arrow = btn.querySelector('span');
+      arrow.textContent = open ? '&#9660;' : '&#9654;';
+    }
+
+    // WhatsApp roteiros
     function sendWhatsApp(tourName, dateInputId) {
       const input = document.getElementById(dateInputId);
       const date = input ? input.value : '';
@@ -521,7 +951,7 @@
         message += ` para a data ${date}`;
       }
       message += '. Gostaria de saber mais informações.';
-      const url = 'https://wa.me/553192893251?text=' + encodeURIComponent(message);
+      const url = 'https://wa.me/5531992893251?text=' + encodeURIComponent(message);
       window.open(url, '_blank');
     }
   </script>
