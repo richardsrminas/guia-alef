@@ -680,7 +680,72 @@
     .quote { transition: transform 0.35s var(--ease), border-color 0.35s var(--ease); }
 
     .logo span { color: var(--accent); font-style: italic; }
-    .wa-float {
+
+    /* =========================================
+       Menu mobile (estilo Capão Forro)
+       ========================================= */
+    .nav-mobile {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #F7F4EE;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      color: var(--ink);
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+    .nav-mobile a {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      letter-spacing: -0.01em;
+      display: block;
+      margin: 8px 0;
+      transition: color 0.3s var(--ease);
+    }
+    .nav-mobile a:hover { color: var(--accent); }
+    .nav-mobile .btn-whatsapp {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 14px 30px;
+      border-radius: 10px;
+      background: #22c55e;
+      margin-top: 20px;
+      box-shadow: 0 12px 30px rgba(34,197,94,0.35);
+      transition: all 0.3s;
+    }
+    .nav-mobile .btn-whatsapp:hover { background: #16a34a; transform: translateY(-2px); }
+
+    /* =========================================
+       WhatsApp flutuante
+       ========================================= */
       position: fixed;
       bottom: 32px;
       right: 32px;
@@ -729,6 +794,7 @@
     @media (min-width: 700px) {
       .nav-links { display: flex; }
       .menu-toggle { display: none; }
+      .nav-mobile { display: none !important; }
       .hero { padding-top: 90px; }
       .hero-content { padding: 0 60px; }
       .hero-scroll { right: 60px; bottom: 60px; }
@@ -738,6 +804,8 @@
     }
     @media (max-width: 699px) {
       .nav-actions { display: none; }
+      .menu-toggle { display: flex; }
+      .nav-links { display: none; }
       .hero-content { padding: 0 24px; }
       .hero h1 { font-size: 2.2rem; }
       .hero-cta { width: 100%; justify-content: center; padding: 16px 0; }
