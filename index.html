@@ -11,7 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* =========================================
-       Design tokens — inspirado em capao-forro e jurere
+       Design tokens — ui-ux-pro-max design system
+       Travel/Tourism Agency (Storytelling-Driven + Hero)
+       Regras: contraste 4.5:1, focus states, reduced-motion, mobile-booking
        ========================================= */
     :root {
       --bg: #F7F4EE;
@@ -22,17 +24,31 @@
       --green: #2C4C3B;
       --green-light: #dce8dd;
       --accent: #c9a255;
+      --accent-hover: #b89044;
       --line: #e4d9c8;
-      --radius: 16px;
+      --radius: 12px;
+      --radius-sm: 8px;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-      --shell-width: 980px;
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+      --shell-width: 1100px;
       --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+      --transition-fast: 200ms var(--ease-out);
+      --transition-base: 350ms var(--ease);
     }
 
     *,
     *::before,
     *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
     body {
       margin: 0;
       padding: 0;
@@ -53,7 +69,11 @@
     p { margin: 0; }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; height: auto; }
-    :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: var(--radius-sm);
+    }
 
     /* Grain texture (subtile, como o capao-forro) */
     body::before {
@@ -77,16 +97,17 @@
     }
 
     /* =========================================
-       Nav fixo com blur — links em uma linha, como o Capão Forro
+       Nav fixo com blur — links em uma linha (padrão Capão Forro)
+       Acessibilidade: focus visível, alvos de toque >= 44px
        ========================================= */
     header { position: sticky; top: 0; z-index: 100; }
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 0;
+      padding: 16px 0;
       gap: 12px;
-      background: rgba(247, 244, 238, 0.75);
+      background: rgba(247, 244, 238, 0.85);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
       position: sticky;
@@ -104,7 +125,7 @@
     }
     .logo {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.1rem;
+      font-size: 2rem;
       font-weight: 600;
       color: var(--green-dark);
       letter-spacing: -0.01em;
@@ -115,9 +136,9 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: 32px;
       font-size: 14px;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--ink-soft);
       font-weight: 600;
@@ -127,9 +148,10 @@
     .nav-links a {
       color: var(--ink-soft);
       position: relative;
-      padding: 6px 0;
-      transition: color 0.3s var(--ease);
+      padding: 8px 0;
+      transition: color var(--transition-base);
     }
+    .nav-links a:focus-visible { color: var(--green-dark); }
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -138,12 +160,14 @@
       width: 0;
       height: 1.5px;
       background: var(--green-dark);
-      transition: width 0.3s var(--ease), left 0.3s var(--ease);
+      transition: width var(--transition-base), left var(--transition-base);
     }
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
       color: var(--green-dark);
     }
-    .nav-links a:hover::after {
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
       width: 100%;
       left: 0;
     }
@@ -156,13 +180,14 @@
       color: var(--ink);
       padding: 10px 18px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       background: transparent;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all var(--transition-base);
       white-space: nowrap;
     }
-    .btn-ghost:hover { background: var(--green-light); border-color: var(--green-dark); }
+    .btn-ghost:hover,
+    .btn-ghost:focus-visible { background: var(--green-light); border-color: var(--green-dark); }
     .btn-primary {
       font-size: 14px;
       font-weight: 700;
@@ -171,13 +196,14 @@
       color: #fff;
       padding: 11px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       background: var(--green-dark);
       cursor: pointer;
-      transition: all 0.35s;
+      transition: all var(--transition-base);
       white-space: nowrap;
     }
-    .btn-primary:hover { background: #162a22; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(31,58,46,0.35); }
+    .btn-primary:hover,
+    .btn-primary:focus-visible { background: #162a22; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(31,58,46,0.35); }
 
     .menu-toggle {
       display: flex;
@@ -190,6 +216,7 @@
       border: none;
       cursor: pointer;
       z-index: 200;
+      padding: 0;
     }
     .menu-toggle span {
       display: block;
@@ -329,7 +356,7 @@
     .about {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: var(--radius);
       padding: 56px 0;
       overflow: hidden;
     }
@@ -344,14 +371,14 @@
       position: relative;
       width: 220px;
       height: 220px;
-      border-radius: 14px;
+      border-radius: var(--radius);
       overflow: hidden;
       border: 3px solid var(--green-dark);
       background: var(--green-light);
       flex-shrink: 0;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      box-shadow: var(--shadow-sm);
     }
-    .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+    .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-base); }
     .about-img-wrap:hover img { transform: scale(1.06); }
     @media (max-width: 700px) { .about-img-wrap { width: 170px; height: 170px; margin: 0 auto; } }
     .about-text h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); color: var(--ink); margin-bottom: 14px; }
@@ -368,16 +395,17 @@
     }
     .tour-card {
       position: relative;
-      border-radius: 16px;
+      border-radius: var(--radius);
       overflow: hidden;
       background: var(--surface);
       border: 1px solid var(--line);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-      transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
       perspective: 1000px;
     }
-    .tour-card:hover {
-      transform: translateY(-10px) rotateY(4deg) rotateX(-2deg);
+    .tour-card:hover,
+    .tour-card:focus-within {
+      transform: translateY(-8px);
       box-shadow: 0 24px 60px rgba(0,0,0,0.12);
     }
     .tour-thumb {
@@ -422,17 +450,18 @@
     input[type="date"] {
       width: 100%;
       padding: 12px 14px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--line);
       background: var(--bg);
       color: var(--ink);
       font-family: 'Inter', sans-serif;
       font-size: 14px;
     }
+    input[type="date"]:focus-visible { border-color: var(--accent); outline: none; }
     .btn-block {
       width: 100%;
       padding: 13px 16px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       border: none;
       background: var(--green-dark);
       color: #fff;
@@ -443,7 +472,8 @@
       cursor: pointer;
       transition: transform 0.15s ease, filter 0.2s ease;
     }
-    .btn-block:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .btn-block:hover,
+    .btn-block:focus-visible { transform: translateY(-1px); filter: brightness(1.1); }
     .btn-block:active { transform: translateY(0); }
 
     /* =========================================
@@ -457,12 +487,13 @@
     @media (max-width: 700px) { .why-grid { grid-template-columns: 1fr; } }
     .why-card {
       padding: 30px 24px;
-      border-radius: 16px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
       background: var(--surface);
-      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+      transition: transform var(--transition-base), border-color var(--transition-base);
     }
-    .why-card:hover { transform: translateY(-5px); border-color: var(--green-light); }
+    .why-card:hover,
+    .why-card:focus-within { transform: translateY(-5px); border-color: var(--green-light); }
     .why-number {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 2.4rem;
@@ -481,7 +512,7 @@
     .process {
       background: var(--green-dark);
       color: #fff;
-      border-radius: 24px;
+      border-radius: var(--radius);
       padding: 80px 32px;
       text-align: center;
     }
@@ -528,12 +559,13 @@
     @media (max-width: 700px) { .testimonial-grid { grid-template-columns: 1fr; } }
     .quote {
       padding: 30px 26px;
-      border-radius: 16px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
       background: var(--surface);
-      transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+      transition: transform var(--transition-base), border-color var(--transition-base);
     }
-    .quote:hover { transform: translateY(-5px); border-color: var(--green-light); }
+    .quote:hover,
+    .quote:focus-within { transform: translateY(-5px); border-color: var(--green-light); }
     .quote-mark {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 3rem;
@@ -552,7 +584,7 @@
        ========================================= */
     .faq-list { max-width: 640px; margin: 0 auto; }
     .faq-item {
-      border-radius: 14px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--line);
       background: var(--surface);
       margin-bottom: 10px;
@@ -571,9 +603,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background var(--transition-fast), color var(--transition-fast);
     }
-    .faq-question:hover { background: var(--bg); }
+    .faq-question:hover,
+    .faq-question:focus-visible { background: var(--bg); }
     .faq-answer {
       max-height: 0;
       overflow: hidden;
@@ -581,7 +614,7 @@
       color: var(--ink-soft);
       font-size: 13px;
       line-height: 1.7;
-      transition: max-height 0.4s var(--ease), padding 0.4s var(--ease);
+      transition: max-height var(--transition-base), padding var(--transition-base);
     }
     .faq-item.open .faq-answer { max-height: 260px; }
     .faq-item.open .faq-question { color: var(--green-dark); }
@@ -593,7 +626,7 @@
       text-align: center;
       padding: 80px 28px;
       background: var(--surface);
-      border-radius: 24px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
     }
     .final-cta h2 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--ink); margin-bottom: 14px; }
@@ -607,15 +640,16 @@
       text-transform: uppercase;
       color: #fff;
       padding: 16px 36px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       background: #22c55e;
       display: inline-flex;
       align-items: center;
       gap: 10px;
       box-shadow: 0 12px 30px rgba(34,197,94,0.35);
-      transition: all 0.3s;
+      transition: all var(--transition-base);
     }
-    .btn-whatsapp:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 16px 40px rgba(34,197,94,0.45); }
+    .btn-whatsapp:hover,
+    .btn-whatsapp:focus-visible { background: #16a34a; transform: translateY(-2px); box-shadow: 0 16px 40px rgba(34,197,94,0.45); }
 
     /* =========================================
        Footer
@@ -758,8 +792,12 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 8px 28px rgba(34,197,94,0.35);
-      transition: all 0.3s;
+      transition: all var(--transition-base);
       animation: pop 0.6s 1s both;
+    }
+    .wa-float:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
     }
     .wa-float::before {
       content: '';
@@ -771,7 +809,8 @@
     }
     @keyframes waPulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
     @keyframes pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
-    .wa-float:hover { transform: scale(1.12); box-shadow: 0 12px 36px rgba(34,197,94,0.45); }
+    .wa-float:hover,
+    .wa-float:focus-visible { transform: scale(1.12); box-shadow: 0 12px 36px rgba(34,197,94,0.45); }
 
     /* =========================================
        Reveal on scroll (referência jurere/capao-forro)
